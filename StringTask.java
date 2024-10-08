@@ -15,7 +15,7 @@ StringProcessingException {
     public char getPenultimateCharacter(String string,int positionFromEnd) throws StringProcessingException {
         int length = getStringLength(string);
 	 if (positionFromEnd < 1||positionFromEnd > length) {
-            throw new Exception("Invalid Position From End");
+            throw new StringProcessingException("Invalid Position From End");
         }
              return string.charAt(length - positionFromEnd);
     }
