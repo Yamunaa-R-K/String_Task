@@ -136,7 +136,9 @@ public class Runner {
 		    String replaceCharactersInput = scanner.nextLine();
 		    System.out.println("Enter number of Characters to replace: ");
 		    int numberOfChars = scanner.nextInt();
-		    String replacedString = stringTask.replaceCharacters(replaceCharactersInput,numberOfChars);
+		    System.out.println("Enter the String to Replace: ");
+		    String stringToReplace = scanner.nextLine();
+		    String replacedString = stringTask.replaceCharacters(replaceCharactersInput,numberOfChars,stringToReplace);
                     System.out.println("String after replacement: " + replacedString);
 		    }
 		    catch(StringProcessingException ex)
