@@ -59,7 +59,11 @@ StringProcessingException {
     public String replaceCharacters(String string,int numberOfChars) throws
  StringProcessingException {
 	checkNull(string);
-               return string.replace(string.substring(0,numberOfChars),"XYZ");
+             if (numberOfChars > string.length()) {
+        	throw new StringProcessingException("Number of characters to replace exceeds string length.");
+    	     }
+    String subString = string.substring(0, numberOfChars);
+    return string.replaceAll(subString,stringToReplace);
     }
 
     public boolean startsWithSubstring(String string, String prefix) throws StringProcessingException {
@@ -105,7 +109,8 @@ StringProcessingException {
     public String concatenateStrings(String line) throws
  StringProcessingException {
 	checkNull(line);
-        return line.replace(" ","");
+	String[] words = line.split("\\s+");  
+        return String.join("", words);
     }
 
     public String[] encloseInArray(String line,String delimiter) throws StringProcessingException {
