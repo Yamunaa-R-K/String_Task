@@ -1,15 +1,17 @@
 package task;
 
 import exception.StringProcessingException;
+import util.StringTaskUtil;
+import java.util.*;
 public class StringTask {
     public int getStringLength(String string) throws
 StringProcessingException {
-	checkNull(string);
+	StringTaskUtil.checkNull(string);
         return string.length();
     }
 
     public char[] convertToCharArray(String string) throws StringProcessingException {
-	checkNull(string);
+	StringTaskUtil.checkNull(string);
         return string.toCharArray();
     }
 
@@ -33,7 +35,7 @@ StringProcessingException {
     }
 
     public int findGreatestPosition(String string, char target) throws StringProcessingException {
-	checkNull(string);
+	StringTaskUtil.checkNull(string);
 	int position = string.lastIndexOf(target);
 	  if (position == -1) {
         throw new StringProcessingException("Character '" + target + "' not found in the string");
@@ -55,47 +57,36 @@ StringProcessingException {
             throw new StringProcessingException("Invalid numberOfChars");
         }
         return string.substring(0, numberOfChars);
-    }
-<<<<<<< Updated upstream
-
-    public String replaceCharacters(String string,int numberOfChars) throws
- StringProcessingException {
-	checkNull(string);
-             if (numberOfChars > string.length()) {
-        	throw new StringProcessingException("Number of characters to replace exceeds string length.");
-    	     }
-=======
-    
+    }    
     public String replaceCharacters(String string, int numberOfChars, String stringToReplace) throws StringProcessingException {
-    	checkNull(string); 
+    	StringTaskUtil.checkNull(string); 
     	if (numberOfChars > string.length()) {
         	throw new StringProcessingException("Number of characters to replace exceeds string length.");
     	}
->>>>>>> Stashed changes
     String subString = string.substring(0, numberOfChars);
     return string.replaceAll(subString,stringToReplace);
     }
 
 
     public boolean startsWithSubstring(String string, String prefix) throws StringProcessingException {
-	checkNull(string);
-	checkNull(prefix);
+	StringTaskUtil.checkNull(string);
+	StringTaskUtil.checkNull(prefix);
         return string.startsWith(prefix);
     }
 
     public boolean endsWithSubstring(String string, String suffix) throws StringProcessingException {
-	checkNull(string);
-	checkNull(suffix);
+	StringTaskUtil.checkNull(string);
+	StringTaskUtil.checkNull(suffix);
         return string.endsWith(suffix);
     }
 
     public String convertToUpperCase(String lowerCaseString) throws StringProcessingException {
-	checkNull(lowerCaseString);
+	StringTaskUtil.checkNull(lowerCaseString);
         return lowerCaseString.toUpperCase();
     }
 
     public String convertToLowerCase(String upperCaseString) throws StringProcessingException {
-	checkNull(upperCaseString);
+	StringTaskUtil.checkNull(upperCaseString);
         return upperCaseString.toLowerCase();
     }
 
@@ -113,29 +104,21 @@ StringProcessingException {
     }
 
     public String acceptMultipleStrings(String multipleStrings) throws StringProcessingException {
-	checkNull(multipleStrings);
+	StringTaskUtil.checkNull(multipleStrings);
         return multipleStrings;
     }
 
-<<<<<<< Updated upstream
-    public String concatenateStrings(String line) throws
- StringProcessingException {
-	checkNull(line);
-	String[] words = line.split("\\s+");  
-        return String.join("", words);
-    }
-=======
+
    public String concatenateStrings(String line) throws StringProcessingException {
-    checkNull(line);  
+    StringTaskUtil.checkNull(line);  
     String[] words = line.split("\\s+");
     return String.join("", words);
    }
 
->>>>>>> Stashed changes
 
     public String[] encloseInArray(String line,String delimiter) throws StringProcessingException {
-	checkNull(line);
-        return line.split(delimiter);
+	StringTaskUtil.checkNull(line);
+        return line.split(Pattern.quote(delimiter));
     }
 
     public String mergeStrings(String[] strings, char character) throws StringProcessingException {
@@ -151,27 +134,23 @@ StringProcessingException {
     }
 
     public boolean checkCaseSensitiveEquality(String str1, String str2) throws StringProcessingException {
-	checkNull(str1);
-	checkNull(str2);
+	StringTaskUtil.checkNull(str1);
+	StringTaskUtil.checkNull(str2);
         return str1.equals(str2);
     }
 
     public boolean checkCaseInsensitiveEquality(String str1, String str2) throws StringProcessingException {
-	checkNull(str1);
-	checkNull(str2);
+	StringTaskUtil.checkNull(str1);
+	StringTaskUtil.checkNull(str2);
 	return str1.equalsIgnoreCase(str2);
     }
 
     public String trimSpaces(String inputString) throws StringProcessingException {
-	checkNull(inputString);
+	StringTaskUtil.checkNull(inputString);
         return inputString.trim();
     }
 
-    private void checkNull(String string) throws StringProcessingException {
-        if (string == null) {
-            throw new StringProcessingException("Null value encountered");
-	    }
-    }
+ 
 
     
 }
