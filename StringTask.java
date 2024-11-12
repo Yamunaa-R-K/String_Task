@@ -1,5 +1,6 @@
 package task;
 
+import exception.StringProcessingException;
 public class StringTask {
     public int getStringLength(String string) throws
 StringProcessingException {
@@ -13,7 +14,7 @@ StringProcessingException {
     }
 
     public char getPenultimateCharacter(String string,int positionFromEnd) throws StringProcessingException {
-        int length = getStringLength(string);
+         int length = getStringLength(string);
 	 if (positionFromEnd < 1||positionFromEnd > length) {
             throw new StringProcessingException("Invalid Position From End");
         }
@@ -55,6 +56,7 @@ StringProcessingException {
         }
         return string.substring(0, numberOfChars);
     }
+<<<<<<< Updated upstream
 
     public String replaceCharacters(String string,int numberOfChars) throws
  StringProcessingException {
@@ -62,9 +64,18 @@ StringProcessingException {
              if (numberOfChars > string.length()) {
         	throw new StringProcessingException("Number of characters to replace exceeds string length.");
     	     }
+=======
+    
+    public String replaceCharacters(String string, int numberOfChars, String stringToReplace) throws StringProcessingException {
+    	checkNull(string); 
+    	if (numberOfChars > string.length()) {
+        	throw new StringProcessingException("Number of characters to replace exceeds string length.");
+    	}
+>>>>>>> Stashed changes
     String subString = string.substring(0, numberOfChars);
     return string.replaceAll(subString,stringToReplace);
     }
+
 
     public boolean startsWithSubstring(String string, String prefix) throws StringProcessingException {
 	checkNull(string);
@@ -106,12 +117,21 @@ StringProcessingException {
         return multipleStrings;
     }
 
+<<<<<<< Updated upstream
     public String concatenateStrings(String line) throws
  StringProcessingException {
 	checkNull(line);
 	String[] words = line.split("\\s+");  
         return String.join("", words);
     }
+=======
+   public String concatenateStrings(String line) throws StringProcessingException {
+    checkNull(line);  
+    String[] words = line.split("\\s+");
+    return String.join("", words);
+   }
+
+>>>>>>> Stashed changes
 
     public String[] encloseInArray(String line,String delimiter) throws StringProcessingException {
 	checkNull(line);
@@ -150,7 +170,8 @@ StringProcessingException {
     private void checkNull(String string) throws StringProcessingException {
         if (string == null) {
             throw new StringProcessingException("Null value encountered");
-        }
-	
+	    }
     }
+
+    
 }
