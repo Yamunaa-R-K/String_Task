@@ -4,8 +4,7 @@ import exception.StringProcessingException;
 import util.StringTaskUtil;
 import java.util.*;
 public class StringTask {
-    public int getStringLength(String string) throws
-StringProcessingException {
+    public int getStringLength(String string) throws StringProcessingException {
 	StringTaskUtil.checkNull(string);
         return string.length();
     }
