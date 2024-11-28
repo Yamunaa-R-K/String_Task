@@ -28,7 +28,7 @@ public class Runner {
         System.out.println("1. Get Length of String");
 	System.out.println("2. Add n Strings and Get Length");
 	System.out.println("3. Display Strings With Spaces");
-	System.out.println("4. Delete first String and Get Length");
+	System.out.println("4. Delete any String and Get Length");
 	System.out.println("5. Print with special characters inbetween Strings and Get Length");
 	System.out.println("6. Get Reversed and Original Strings Length");
 	System.out.println("7. Delete specific Characters inbetween Strings and Get Length");
@@ -55,22 +55,22 @@ public class Runner {
         try {
             switch (choice) {
                 case 1:
-                    displayStringLength();
+                    getLength();
                     break;
 		case 2:
-		    displayStringsAndLength();
+		    insertStringsWithDelimter();
 		    break;
 		case 3:
-		    displayStringsWithSpaces();
+		    insertStringBetween();
 		    break;
 		case 4:
-		    deleteFirstString();
+		    deleteSpecificString();
 		    break;
 		case 5:
 		    replaceSpacesBySpecialCharacters();
 		    break;
 		case 6:
-		    reverseStringsAndGetLength();
+		    reverseStrings();
 		    break;
 		case 7:
 		    deleteSpecificCharacters();
@@ -92,21 +92,26 @@ public class Runner {
             ex.printStackTrace();
         }
     }
+    private static StringBuilder getStringBuilder(String input) {
+	return new StringBuilder();
+    }
 
-    public static void displayStringLength() throws StringBuilderProcessingException {
+    public static void getLength() throws StringBuilderProcessingException {
         try {
             System.out.println("Enter the String: ");
             String inputString = scanner.nextLine();
-	    System.out.println("Length of the string: " + stringBuilderTask.getLength(inputString));
+            StringBuilder stringBuilder = getStringBuilder(inputString);
+	    System.out.println("Length of the string: " + stringBuilderTask.getLength(stringBuilder));
         } catch (StringBuilderProcessingException ex) {
             throw new StringBuilderProcessingException("Error displaying string length", ex);
         }
     }
-    public static void displayStringsAndLength() throws StringBuilderProcessingException {
+    public static void insertStringsWithDelimter() throws StringBuilderProcessingException {
 	try {
 	    System.out.println("Enter the String: ");
             String initialString = scanner.nextLine();
-	    System.out.println("Length of the string: " + stringBuilderTask.getLength(initialString));
+	    StringBuilder stringBuilder = getStringBuilder(initialString);
+	    System.out.println("Length of the string before adding other strings: " + stringBuilderTask.getLength(stringBuilder));
 	    System.out.println("Enter Number of Strings to Add: ");
 	    int numberOfStrings = scanner.nextInt();
             scanner.nextLine();
@@ -117,86 +122,110 @@ public class Runner {
 	    }
 	    System.out.println("Enter delimiter: ");
 	    String delimiter = scanner.nextLine();
-	    String finalString = stringBuilderTask.getUpdatedString(initialString, stringsToAdd, delimiter);
-
-            System.out.println("Length of the final string: " + stringBuilderTask.getLength(finalString));
-            System.out.println("Updated String: " + finalString);	    
+	    stringBuilder = stringBuilderTask.insertStringsWithDelimter(stringBuilder, stringsToAdd, delimiter);
+	    System.out.println("Length of the final string: " + stringBuilderTask.getLength(stringBuilder));
+            System.out.println("Updated String: " + stringBuilder.toString());	    
  	} catch (StringBuilderProcessingException ex) {
             throw new StringBuilderProcessingException("Error displaying strings length", ex);
-        }
+	}
     }
-    public static void displayStringsWithSpaces() throws StringBuilderProcessingException {
-	try {
-	    System.out.println("Enter the String 1: ");
-            String firstString = scanner.nextLine();
-	    System.out.println("Enter the String 2: ");
-            String secondString = scanner.nextLine();
-	    String concatenatedString = stringBuilderTask.concatenateStrings(firstString,secondString);
-	    System.out.println("Length before inserting Intermediate String: "+stringBuilderTask.getLength(concatenatedString));
-	    System.out.println("Enter the Intermediate String: ");
+    public static void insertStringBetween() throws StringBuilderProcessingException {
+        try {
+            System.out.println("Enter the number of strings you want to concatenate: ");
+            int numberOfStrings = scanner.nextInt();
+            scanner.nextLine(); 
+            StringBuilder concatenatedString = getStringBuilder("");
+            for (int i = 0; i < numberOfStrings; i++) {
+            	System.out.println("Enter String " + (i + 1) + ": ");
+            	String inputString = scanner.nextLine();
+            	concatenatedString.append(inputString);
+            }
+            System.out.println("Enter the Intermediate String: ");
             String intermediateString = scanner.nextLine();
-	    String finalString = stringBuilderTask.getStringsWithSpaces(firstString, concatenatedString, intermediateString);
-            System.out.println("Length of the final string: " + stringBuilderTask.getLength(finalString));
-            System.out.println("Updated String: " + finalString);	    
- 	} catch (StringBuilderProcessingException ex) {
-            throw new StringBuilderProcessingException("Error displaying strings length", ex);
-        }
-    }
-    public static void deleteFirstString() throws StringBuilderProcessingException {
-	try {
-	    System.out.println("Enter the String 1: ");
-            String firstString = scanner.nextLine();
-	    System.out.println("Enter the String 2: ");
-            String secondString = scanner.nextLine();
-	    String concatenatedString = stringBuilderTask.concatenateStrings(firstString,secondString);
-	    System.out.println("Length before deleting First String: "+stringBuilderTask.getLength(concatenatedString));
-	    String finalString = stringBuilderTask.getRemainingString(firstString, concatenatedString);
+	    System.out.println("Enter 2 String number in which you want to insert this String in between: ");
+	    int stringNumber1 = scanner.nextInt();
+	    scanner.nextLine();
+	    int stringNumber2 = scanner.nextInt();
+	    scanner.nextLine();
+	    System.out.println("Length before inserting Intermediate String: " + stringBuilderTask.getLength(concatenatedString));
+	    concatenatedString = stringBuilderTask.insertStringBetween(concatenatedString,intermediateString,stringNumber1,stringNumber2);
+            System.out.println("Length of the final string after inserting: " + stringBuilderTask.getLength(concatenatedString));
+            System.out.println("Updated String: " + concatenatedString);
+        } catch (StringBuilderProcessingException ex) {
+        throw new StringBuilderProcessingException("Error processing string concatenation or insertion", ex);
+      }
+    } 
 
-            System.out.println("Length of the final string: " + stringBuilderTask.getLength(finalString));
-            System.out.println("Updated String: " + finalString);	    
- 	} catch (StringBuilderProcessingException ex) {
-            throw new StringBuilderProcessingException("Error displaying strings length", ex);
-        }
+    public static void deleteSpecificString() throws StringBuilderProcessingException {
+        try {
+            System.out.println("Enter the number of strings you want to concatenate: ");
+            int numberOfStrings = scanner.nextInt();
+            scanner.nextLine(); 
+            StringBuilder concatenatedString = getStringBuilder("");
+
+            for (int i = 0; i < numberOfStrings; i++) {
+            	System.out.println("Enter String " + (i + 1) + ": ");
+            	String inputString = scanner.nextLine();
+            	concatenatedString.append(inputString);
+            }
+	    System.out.println("Enter Which Number Of String You Want to Delete: ");
+	    int stringNumber = scanner.nextInt();
+	    scanner.nextLine();
+	    System.out.println("Length before deleting first string: " + stringBuilderTask.getLength(concatenatedString));
+            concatenatedString = stringBuilderTask.deleteSpecificString(concatenatedString,stringNumber);
+            System.out.println("Length of the final string after deletion: " + stringBuilderTask.getLength(concatenatedString));
+            System.out.println("Updated String: " + concatenatedString.toString());
+        } catch (StringBuilderProcessingException ex) {
+        throw new StringBuilderProcessingException("Error processing string concatenation or deletion", ex);
+       }
     }
     public static void replaceSpacesBySpecialCharacters() throws StringBuilderProcessingException {
-	try {
-	    System.out.println("Enter the String 1: ");
-            String firstString = scanner.nextLine();
-	    System.out.println("Enter the String 2: ");
-            String secondString = scanner.nextLine();
-	    System.out.println("Enter the String 3: ");
-            String thirdString = scanner.nextLine();
-	    System.out.println("Enter delimiter: ");
-            String delimiter = scanner.nextLine();
-	    String concatenatedString = stringBuilderTask.concatenateStrings(firstString,secondString);
-	    String concatenatedWithAnotherString = stringBuilderTask.concatenateStrings(concatenatedString,thirdString);
-	    System.out.println("Length before replacing with Special Characters: "+stringBuilderTask.getLength(concatenatedWithAnotherString));
-	    String finalString = stringBuilderTask.replaceSpacesBySpecialCharacters(concatenatedWithAnotherString,delimiter);
-	    System.out.println("Length of the final string: " + stringBuilderTask.getLength(finalString));
-            System.out.println("Updated String: " + finalString);	    
- 	} catch (StringBuilderProcessingException ex) {
-            throw new StringBuilderProcessingException("Error displaying strings length", ex);
+    try {
+        System.out.println("Enter the number of strings you want to concatenate: ");
+        int numberOfStrings = scanner.nextInt();
+        scanner.nextLine(); 
+        StringBuilder concatenatedString = getStringBuilder("");
+
+        for (int i = 0; i < numberOfStrings; i++) {
+            System.out.println("Enter String " + (i + 1) + ": ");
+            String inputString = scanner.nextLine();
+            concatenatedString.append(inputString);
         }
+
+        System.out.println("Length before replacing spaces: " + stringBuilderTask.getLength(concatenatedString));
+        System.out.println("Enter special character to replace spaces with: ");
+        String specialCharacter = scanner.nextLine();
+        concatenatedString = stringBuilderTask.replaceSpacesBySpecialCharacters(concatenatedString, specialCharacter);
+        System.out.println("Length of the final string after replacement: " + stringBuilderTask.getLength(concatenatedString));
+        System.out.println("Updated String: " + concatenatedString);
+    } catch (StringBuilderProcessingException ex) {
+        throw new StringBuilderProcessingException("Error processing string concatenation or replacement", ex);
     }
-    public static void reverseStringsAndGetLength() throws StringBuilderProcessingException {
-	try {
-	    System.out.println("Enter the String 1: ");
-            String firstString = scanner.nextLine();
-	    System.out.println("Enter the String 2: ");
-            String secondString = scanner.nextLine();
-	    System.out.println("Enter the String 3: ");
-            String thirdString = scanner.nextLine();
-	    String concatenatedString = stringBuilderTask.concatenateStrings(firstString,secondString);
-	    String concatenatedWithAnotherString = stringBuilderTask.concatenateStrings(concatenatedString,thirdString);
-	    System.out.println("Length before reversing: "+stringBuilderTask.getLength(concatenatedWithAnotherString));
-	    String finalString = stringBuilderTask.reverseStrings(concatenatedWithAnotherString);
-	    System.out.println("Length of the final string after reversing: " + stringBuilderTask.getLength(finalString));
-            System.out.println("Updated String: " + finalString);	    
- 	} catch (StringBuilderProcessingException ex) {
-            throw new StringBuilderProcessingException("Error displaying strings length", ex);
+   }
+   public static void reverseStrings() throws StringBuilderProcessingException {
+    try {
+        System.out.println("Enter the number of strings you want to concatenate: ");
+        int numberOfStrings = scanner.nextInt();
+        scanner.nextLine();
+        StringBuilder concatenatedString = getStringBuilder("");
+
+        for (int i = 0; i < numberOfStrings; i++) {
+            System.out.println("Enter String " + (i + 1) + ": ");
+            String inputString = scanner.nextLine();
+            concatenatedString.append(inputString);
         }
+
+        System.out.println("Length before reversing: " + stringBuilderTask.getLength(concatenatedString));
+        concatenatedString = stringBuilderTask.reverseStrings(concatenatedString);
+        System.out.println("Length of the final string after reversing: " + stringBuilderTask.getLength(concatenatedString));
+        System.out.println("Updated String: " + concatenatedString.toString());
+    } catch (StringBuilderProcessingException ex) {
+        throw new StringBuilderProcessingException("Error processing string concatenation or reversal", ex);
     }
-    public static void deleteSpecificCharacters() throws StringBuilderProcessingException {
+   }
+
+
+   public static void deleteSpecificCharacters() throws StringBuilderProcessingException {
 	try {
 	    System.out.println("Enter the minimum number of Characters of a String: ");
 	    int minNumOfChars = scanner.nextInt();
@@ -207,14 +236,15 @@ public class Runner {
                 throw new StringBuilderProcessingException(
                         "The input string must have" + minNumOfChars + " characters.");
             }
+	    StringBuilder stringBuilder = getStringBuilder(inputString);
 	    System.out.println("Enter the starting index for deletion:");
             int startIndex = scanner.nextInt();
             System.out.println("Enter the ending index for deletion:");
             int endIndex = scanner.nextInt();
-	    System.out.println("Length before deleting specified characters: "+stringBuilderTask.getLength(inputString));
-	    String finalString = stringBuilderTask.deleteSpecificCharacters(inputString,startIndex,endIndex);
-	    System.out.println("Length of the final string after deleting specified characters: " + stringBuilderTask.getLength(finalString));
-            System.out.println("Updated String: " + finalString);	    
+	    System.out.println("Length before deleting specified characters: "+stringBuilderTask.getLength(stringBuilder));
+	    stringBuilder = stringBuilderTask.deleteSpecificCharacters(stringBuilder,startIndex,endIndex);
+	    System.out.println("Length of the final string after deleting specified characters: " + stringBuilderTask.getLength(stringBuilder));
+            System.out.println("Updated String: " + stringBuilder.toString());	    
  	} catch (StringBuilderProcessingException ex) {
             throw new StringBuilderProcessingException("Error displaying strings length", ex);
         }
@@ -230,59 +260,69 @@ public class Runner {
                 throw new StringBuilderProcessingException(
                         "The input string must have" + minNumOfChars + " characters.");
             }
+	    StringBuilder stringBuilder = getStringBuilder(inputString);
 	    System.out.println("Enter the starting index for replacing:");
             int startIndex = scanner.nextInt();
             System.out.println("Enter the ending index for replacing:");
             int endIndex = scanner.nextInt();
 	    System.out.println("Enter a string to replace: ");
 	    String stringToReplace = scanner.nextLine();
-	    System.out.println("Length before replacing specified characters: "+stringBuilderTask.getLength(inputString));
-	    String finalString = stringBuilderTask.replaceSpecificCharacters(inputString,startIndex,endIndex,stringToReplace);
-	    System.out.println("Length of the final string after replacing specified characters: " + stringBuilderTask.getLength(finalString));
-            System.out.println("Updated String: " + finalString);	    
+	    System.out.println("Length before replacing specified characters: "+stringBuilderTask.getLength(stringBuilder));
+	    stringBuilder = stringBuilderTask.replaceSpecificCharacters(stringBuilder,startIndex,endIndex,stringToReplace);
+	    System.out.println("Length of the final string after replacing specified characters: " + stringBuilderTask.getLength(stringBuilder));
+            System.out.println("Updated String: " + stringBuilder.toString());	    
  	} catch (StringBuilderProcessingException ex) {
             throw new StringBuilderProcessingException("Error displaying strings length", ex);
         }
     }
     public static void getFirstIndexOfDelimiter() throws StringBuilderProcessingException {
-	try {
-	    System.out.println("Enter the String 1: ");
-            String firstString = scanner.nextLine();
-	    System.out.println("Enter the String 2: ");
-            String secondString = scanner.nextLine();
-	    System.out.println("Enter the String 3: ");
-            String thirdString = scanner.nextLine();
-	    System.out.println("Enter the delimiter: ");
-	    String delimiter = scanner.nextLine();
-	    String concatenatedString = stringBuilderTask.concatenateStringsWithDelimiter(firstString,secondString,delimiter);
-	    String concatenatedWithAnotherString = stringBuilderTask.concatenateStringsWithDelimiter(concatenatedString,thirdString,delimiter);
-	    System.out.println("Length before getting First index: "+stringBuilderTask.getLength(concatenatedWithAnotherString));
-	    int firstIndexOfDelimiter = stringBuilderTask.getFirstIndexOfDelimiter(concatenatedWithAnotherString,delimiter);
-	    System.out.println("Index of First Delimiter: " + firstIndexOfDelimiter);    
- 	} catch (StringBuilderProcessingException ex) {
-            throw new StringBuilderProcessingException("Error displaying strings length", ex);
-        }
-    }
-     public static void getLastIndexOfDelimiter() throws StringBuilderProcessingException {
-	try {
-	    System.out.println("Enter the String 1: ");
-            String firstString = scanner.nextLine();
-	    System.out.println("Enter the String 2: ");
-            String secondString = scanner.nextLine();
-	    System.out.println("Enter the String 3: ");
-            String thirdString = scanner.nextLine();
-	    System.out.println("Enter the delimiter: ");
-	    String delimiter = scanner.nextLine();
-	    String concatenatedString = stringBuilderTask.concatenateStringsWithDelimiter(firstString,secondString,delimiter);
-	    String concatenatedWithAnotherString = stringBuilderTask.concatenateStringsWithDelimiter(concatenatedString,thirdString,delimiter);
-	    System.out.println("Length before getting Last index: "+stringBuilderTask.getLength(concatenatedWithAnotherString));
-	    int lastIndexOfDelimiter = stringBuilderTask.getLastIndexOfDelimiter(concatenatedWithAnotherString,delimiter);
-	    System.out.println("Index of Last Delimiter: " + lastIndexOfDelimiter); 	    
- 	} catch (StringBuilderProcessingException ex) {
-            throw new StringBuilderProcessingException("Error displaying strings length", ex);
-        }
-    }
+    	try {
+            System.out.println("Enter the number of strings you want to concatenate: ");
+            int numberOfStrings = scanner.nextInt();
+            scanner.nextLine(); 
+            StringBuilder concatenatedString = getStringBuilder("");
+            System.out.println("Enter delimiter: ");
+            String delimiter = scanner.nextLine();
 
+            for (int i = 0; i < numberOfStrings; i++) {
+            	System.out.println("Enter String " + (i + 1) + ": ");
+            	String inputString = scanner.nextLine();
+            	concatenatedString.append(inputString).append(delimiter);
+            }
+	    concatenatedString.delete(concatenatedString.length() - delimiter.length(), concatenatedString.length());
+            System.out.println("Length before getting first index: " + stringBuilderTask.getLength(concatenatedString));
+            System.out.println("Enter the delimiter to search for: ");
+            String delimiterToSearch = scanner.nextLine();
+            int firstIndexOfDelimiter = stringBuilderTask.getFirstIndexOfDelimiter(concatenatedString, delimiterToSearch);
+            System.out.println("Index of first delimiter: " + firstIndexOfDelimiter);
+       } catch (StringBuilderProcessingException ex) {
+        	throw new StringBuilderProcessingException("Error processing string concatenation or delimiter search", ex);
+       }
+   }
+   public static void getLastIndexOfDelimiter() throws StringBuilderProcessingException {
+       try {
+           System.out.println("Enter the number of strings you want to concatenate: ");
+           int numberOfStrings = scanner.nextInt();
+           scanner.nextLine();
+           StringBuilder concatenatedString = getStringBuilder("");
+           System.out.println("Enter delimiter: ");
+           String delimiter = scanner.nextLine();
+           for (int i = 0; i < numberOfStrings; i++) {
+            	System.out.println("Enter String " + (i + 1) + ": ");
+            	String inputString = scanner.nextLine();
+            	concatenatedString.append(inputString).append(delimiter);
+           }
+	   concatenatedString.delete(concatenatedString.length() - delimiter.length(), concatenatedString.length());
+	   System.out.println("Length before getting last index: " + stringBuilderTask.getLength(concatenatedString));
+           System.out.println("Enter the delimiter to search for: ");
+           String delimiterToSearch = scanner.nextLine();
+           int lastIndexOfDelimiter = stringBuilderTask.getLastIndexOfDelimiter(concatenatedString, delimiterToSearch);
+           System.out.println("Index of last delimiter: " + lastIndexOfDelimiter);
+   	} catch (StringBuilderProcessingException ex) {
+       		throw new StringBuilderProcessingException("Error processing string concatenation or delimiter search", ex);
+    	}
+   }
+ 
 
     
 
